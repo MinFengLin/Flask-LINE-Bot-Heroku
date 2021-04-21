@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from flask import Flask, abort, request
+from bs4 import BeautifulSoup
 
 # https://github.com/line/line-bot-sdk-python
 from linebot import LineBotApi, WebhookHandler
@@ -33,8 +34,14 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    get_message = event.message.text
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
+    momo_urls = ['https://m.momoshop.com.tw/goods.momo?i_code=7809731&mdiv=category&cc3=4302400000&cc1=4302400245',
+                'https://m.momoshop.com.tw/goods.momo?i_code=7874514&mdiv=category&cc3=4302400000&cc1=4302400245']
 
-    # Send To Line
-    reply = TextSendMessage(text=f"{get_message}")
-    line_bot_api.reply_message(event.reply_token, reply)
+    line_bot_api.reply_message(event.reply_token, datetime.date.today() + "\n")
+    for i, m_url in enumerate(momo_urls):
+        response = requests.get(m_url, headers=headers)
+        soup = BeautifulSoup(response.text)
+        m_title_result = soup.find(id="goodsName")
+        m_price_result = soup.find(class_="priceArea")
+        line_bot_api.reply_message(event.reply_token, m_title_result.getText() + "\n" + m_price_result.getText())

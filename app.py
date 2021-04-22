@@ -47,7 +47,7 @@ def handle_message(event):
         m_title_result = soup.find(id="goodsName")
         m_price_result = soup.find(class_="priceArea")
         get_message += m_title_result.getText() + "\n" +
-                       m_price_result.getText() + "\n")
+                       m_price_result.getText() + "\n"
 
     reply = TextSendMessage(text=f"{get_message}")
     line_bot_api.reply_message(event.reply_token, reply)

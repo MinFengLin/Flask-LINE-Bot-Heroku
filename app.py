@@ -4,6 +4,7 @@ from datetime import datetime
 
 from flask import Flask, abort, request
 from bs4 import BeautifulSoup
+import requests
 
 # https://github.com/line/line-bot-sdk-python
 from linebot import LineBotApi, WebhookHandler

@@ -38,10 +38,17 @@ def handle_message(event):
     momo_urls = ['https://m.momoshop.com.tw/goods.momo?i_code=7809731&mdiv=category&cc3=4302400000&cc1=4302400245',
                 'https://m.momoshop.com.tw/goods.momo?i_code=7874514&mdiv=category&cc3=4302400000&cc1=4302400245']
 
-    line_bot_api.reply_message(event.reply_token, datetime.date.today() + "\n")
+    # line_bot_api.reply_message(event.reply_token, datetime.date.today() + "\n")
+    time = datetime.date.today()
+    line_bot_api.reply_message(event.reply_token,
+                                   text='---------'.join(time))
+
     for i, m_url in enumerate(momo_urls):
         response = requests.get(m_url, headers=headers)
         soup = BeautifulSoup(response.text)
         m_title_result = soup.find(id="goodsName")
         m_price_result = soup.find(class_="priceArea")
-        line_bot_api.reply_message(event.reply_token, m_title_result.getText() + "\n" + m_price_result.getText())
+        content.append(m_title_result.getText() + "\n" +
+                       m_price_result.getText())
+        line_bot_api.reply_message(event.reply_token,
+                                   text='\n\n'.join(content))

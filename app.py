@@ -1,4 +1,5 @@
 import os
+import time, datetime
 from datetime import datetime
 
 from flask import Flask, abort, request
@@ -35,8 +36,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
 
-    time = datetime.date.today()
-    get_message = time
+    time_now = datetime.today().date()
+    get_message = time_now
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'}
     momo_urls = ['https://m.momoshop.com.tw/goods.momo?i_code=7809731&mdiv=category&cc3=4302400000&cc1=4302400245',
                 'https://m.momoshop.com.tw/goods.momo?i_code=7874514&mdiv=category&cc3=4302400000&cc1=4302400245']
